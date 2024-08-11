@@ -16,7 +16,3 @@ mongoose_1.default.connect(dbUri).then(() => {
 }).catch((err) => {
     console.error('Error connecting to MongoDB:', err);
 });
-// app.use('/todos', todoRoutes);
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});

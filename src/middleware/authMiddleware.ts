@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
+import dotenv from 'dotenv';
 
-const secret = 'your_jwt_secret_key';
+dotenv.config();
+const secret = process.env.JWT_SECRET || "default_secret_key";
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');

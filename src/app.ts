@@ -1,27 +1,39 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
+import http from 'http';
+import dotenv from 'dotenv';
+
 import todoRoutes from './routes/todoRoutes';
 import userRoutes from './routes/userRoutes';
+import utilsRoutes from './routes/utilsRoutes';
 import { authMiddleware } from './middleware/authMiddleware';
+import { setupWebSocketServer, broadcast } from './config/websocket';
+import { configureSwagger } from './config/swagger';
+import { connectToDatabase } from './config/database';
 
+// Load environment variables
+dotenv.config();
+
+// Initialize Express app
 const app = express();
 const port = process.env.PORT || 3000;
-
+const server = http.createServer(app);
 app.use(bodyParser.json());
 
-const dbUri = 'mongodb+srv://todouser:9vQPENbRQewkVweq@to-do-database.efr2sck.mongodb.net/todo_db?retryWrites=true&w=majority&appName=to-do-database';
-mongoose.connect(dbUri).then(() => {
-  console.log('Connected to MongoDB');
-}).catch((err) => {
-  console.error('Error connecting to MongoDB:', err);
-});
+// Initialize WebSocket server
+setupWebSocketServer(server);
 
-// User routes
-app.use('/users', userRoutes);  // Use userRoutes
+// Establish connection with DB
+const dbUri = process.env.DB_URI || '';
+connectToDatabase(dbUri);
 
-// Todo routes with authentication middleware
+// Swagger setup
+configureSwagger(app); 
+
+// Routes - Smart Scheduling is in Utils
+app.use('/users', userRoutes);
 app.use('/todos', authMiddleware, todoRoutes);
+app.use('/utils', authMiddleware, utilsRoutes);
 
 // Error handling
 app.use((err: any, req: any, res: any, next: any) => {
@@ -29,6 +41,7 @@ app.use((err: any, req: any, res: any, next: any) => {
   res.status(500).send('Something went wrong');
 });
 
-app.listen(port, () => {
+// Start server
+server.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

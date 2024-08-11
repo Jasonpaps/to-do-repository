@@ -9,24 +9,10 @@ import {
 
 const router = Router();
 
-router.get('/', (req, res) => {
-  getTodos(req, res);
-});
-
-router.post('/', (req, res) => {
-  createTodo(req, res);
-});
-
-router.get('/:id', (req, res) => {
-  getTodoById(req, res);
-});
-
-router.patch('/:id', (req, res) => {
-  updateTodo(req, res);
-});
-
-router.delete('/:id', (req, res) => {
-  deleteTodo(req, res);
-});
+router.get('/', getTodos);
+router.post('/', createTodo);
+router.get('/:id', getTodoById);
+router.patch('/:id', updateTodo);
+router.delete('/:id', deleteTodo);
 
 export default router;
