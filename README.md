@@ -4,6 +4,16 @@
 
 The Todo API is a Node.js application built with Express and MongoDB. It provides a platform for managing todos and generating smart schedules based on todo attributes and dependencies. The application supports WebSocket for real-time updates and uses Swagger for API documentation.
 
+## Smart-schedule logic
+
+Smart-scheduling considers all todo tasks that are currently incomplete. The order of the tasks is depending
+
+- **Deadline**: Tasks that have earlier deadlines, are prioritised
+- **Importance**: Each task has a grade of importance. More important tasks are prioritised.
+- **Estimated Time**: Finally, tasks that take less time are prioritised.
+
+The metrics are considered in the following order: **Deadline** > **Importance** > **Estimated Time**. Additionally, if a task has dependencies but is first in the order, then its dependencies are prioritized first.
+
 ## Features
 
 - **CRUD Operations for Todos**: Create, read, update, and delete todo items.
@@ -24,8 +34,8 @@ The Todo API is a Node.js application built with Express and MongoDB. It provide
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/your-repo/smart-scheduling-api.git
-   cd smart-scheduling-api
+   git clone https://github.com/Jasonpaps/to-do-repository.git
+   cd to-do-repository
    ```
 
 2. **Install Dependencies**
