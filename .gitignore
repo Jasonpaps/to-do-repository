@@ -5,3 +5,9 @@
 
 # Ignore node_modules directory
 node_modules/
+
+# Ignore dist directory (output dir)
+dist/
+
+# Ignore the .env directory - Commented out since there is no hosted environment
+# .env

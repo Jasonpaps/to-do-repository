@@ -16,12 +16,15 @@ exports.validateUpdateTodo = exports.validateObjectId = exports.validateTodo = v
 const mongoose_1 = __importDefault(require("mongoose"));
 const todo_1 = __importDefault(require("../models/todo"));
 const isValidObjectId = (id) => mongoose_1.default.Types.ObjectId.isValid(id);
+// Helper function that chekcs if dependencies exist
 const checkDependenciesExist = (dependencies) => __awaiter(void 0, void 0, void 0, function* () {
     const existingDependencies = yield todo_1.default.find({ _id: { $in: dependencies } });
     return existingDependencies.length === dependencies.length;
 });
+// Validation for Create Todo
 const validateTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, description, deadline, importance, estimatedTime, dependencies, completed, } = req.body;
+    // Basic Validation
     if (!title || typeof title !== "string") {
         return res.status(400).json({ message: "Invalid title. It must be a non-empty string." });
     }
@@ -43,12 +46,14 @@ const validateTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     if (typeof completed !== "boolean") {
         return res.status(400).json({ message: "Invalid completed status. It must be a boolean value." });
     }
+    // Dependencies must exist in DB
     if (!(yield checkDependenciesExist(dependencies))) {
         return res.status(404).json({ message: "One or more dependencies do not exist." });
     }
     next();
 });
 exports.validateTodo = validateTodo;
+// Validation if Id passed has the MongoDB format
 const validateObjectId = (req, res, next) => {
     const { id } = req.params;
     if (!mongoose_1.default.Types.ObjectId.isValid(id)) {
@@ -57,6 +62,7 @@ const validateObjectId = (req, res, next) => {
     next();
 };
 exports.validateObjectId = validateObjectId;
+// Validation for Update Todo
 const validateUpdateTodo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, description, deadline, importance, estimatedTime, dependencies, completed, } = req.body;
     // Partial Update is available, hence check if fields exist
@@ -81,6 +87,7 @@ const validateUpdateTodo = (req, res, next) => __awaiter(void 0, void 0, void 0,
     if (completed !== undefined && typeof completed !== "boolean") {
         return res.status(400).json({ message: "Invalid completed status. It must be a boolean value." });
     }
+    // Dependencies must exist in DB
     if (dependencies && !(yield checkDependenciesExist(dependencies))) {
         return res.status(404).json({ message: "One or more dependencies do not exist." });
     }

@@ -4,6 +4,7 @@
   "description": "",
   "main": "dist/app.js",
   "scripts": {
+    "test": "jest",
     "build": "tsc && npm run copy-yaml",
     "start": "npm run build && node dist/app.js",
     "copy-yaml": "copyfiles -u 1 src/docs/api.yaml dist/"
