@@ -9,5 +9,8 @@ node_modules/
 # Ignore dist directory (output dir)
 dist/
 
+# Ignore package-lock (output dir)
+package-lock.json
+
 # Ignore the .env directory - Commented out since there is no hosted environment
 # .env
