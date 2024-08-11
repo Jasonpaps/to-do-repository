@@ -95,9 +95,11 @@ The API endpoints can be explored in detail using Swagger. You can access the in
 To run the tests for this application, use the following command:
 
 ```bash
-npm test
+npm test  
 ```
-The tests are set up with Jest, and the test suite includes unit tests for the API endpoints of todos, users and utils.
+The tests are set up with Jest and cover unit tests for the API endpoints related to todos, users, and utils.
+
+**Note**: The first time you run the tests, the process might take up to 2 minutes. This is due to the initial download of necessary dependencies, including MongoDB binaries, which are required for setting up the in-memory MongoDB server used in the tests.
 
 ## Notes
 - **.env File**: The `.env` file is included in the repository for convenience, allowing users to run the project immediately after downloading. In a production environment, this file would typically be included in the `.gitignore` to prevent it from being tracked by version control. Environment variables should be securely managed and stored in the hosting environment instead.
